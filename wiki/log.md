@@ -3,3 +3,4 @@
 > 格式：`[YYYY-MM-DD] <ingest|query|lint> | <一句话>`。可 grep。新在下方追加。
 
 [2026-08-11] lint | 建立 karpathy LLM-Wiki 结构：新增 raw/ wiki/，8 域 112 篇迁入 wiki/，生成 index.md / log.md / 根 CLAUDE.md(schema)。
+[2026-08-11] lint | 补 composer_stub 缺失双链：HWC/SERDES链路/GFWK稳定性-阅读脉络/TC_CSOC_FAULT_003/TC_GFWK_STR_005/TC_GFWK_STRESS_006/BUG-STRESS006 共7页 prose/footer 裸术语→[[composer_stub]]（跳过代码/mermaid/路径）。

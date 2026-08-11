@@ -322,5 +322,5 @@ STRESS_006_ROUNDS=1 MDT_CHURN=40 pytest cases/MultiMedia/GPU/Stress/TC_GFWK_STRE
 
 ## 关联
 - 同族 [[TC_GFWK_STRESS_004]]（后排屏开合）· [[TC_GFWK_STRESS_005]]（环境光/自动亮度）
-- 栈层 [[SurfaceFlinger]] · [[HWC]] · 后排屏机制 [[后排屏]]
+- 栈层 [[SurfaceFlinger]] · [[HWC]] · 后排屏机制 [[Rear Display]]
 - 总览 [[000-GFWK图形框架总览]] · 映射 [[06-GFWK如何映射到测试用例]]

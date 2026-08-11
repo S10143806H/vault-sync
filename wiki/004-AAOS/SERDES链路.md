@@ -63,6 +63,6 @@ App -> [[SurfaceFlinger]] -> [[HWC]] -> DPU -> [SERDES 序列器] --串行链路
 
 ## 关联
 - 显示栈 [[SurfaceFlinger]] · [[HWC]] · [[SurfaceControl]]
-- 后排屏机制 [[后排屏]] · 显示开关恢复 [[TC_GFWK_STRESS_007]]
+- 后排屏机制 [[Rear Display]] · 显示开关恢复 [[TC_GFWK_STRESS_007]]
 - 跨 SoC(仪表侧 [[Weston]]/[[composer_stub]])[[跨SoC]]
 - 用例总览 [[GFWK 稳定性测试用例全量清单]]

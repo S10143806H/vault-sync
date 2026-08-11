@@ -42,13 +42,57 @@ flowchart LR
     style GIPC fill:#fff3cd
 ```
 
-## 本平台真实进程（两端各一个，别混）
-| 侧 | 进程 | 角色 |
-|---|---|---|
-| **IVI(Android) 发送端** | `vendor.gua.hardware.cluster-service` + `gipc_sdd` | 把 IVI 合成的仪表层经 GIPC/SHMEM 送出 |
-| **A720(Linux) 接收端** | **`/bin/composer_stub`** | **Wayland 客户端**：收 IVI 帧交给 [[Weston]] 上仪表屏 |
+## 进程
+
+| 侧                    | 进程                                                 | 角色                                        |
+| -------------------- | -------------------------------------------------- | ----------------------------------------- |
+| **IVI(Android) 发送端** | `vendor.gua.hardware.cluster-service` + `gipc_sdd` | 把 IVI 合成的仪表层经 GIPC/SHMEM 送出               |
+| **A720(Linux) 接收端**  | **`/bin/composer_stub`**                           | **Wayland 客户端**：收 IVI 帧交给 [[Weston]] 上仪表屏 |
+
+---
 
 
+
+``` bash
+# 本机连 a720（示例）
+picocom -b 921600 /dev/ttyUSB5
+
+# 串口内
+pidof composer_stub
+
+# 或看完整路径是否就是 /bin/composer_stub
+ps | grep composer_stub | grep -v grep
+kill -9 $(pidof composer_stub) # 骤死
+# 或
+kill -TERM $(pidof composer_stub) # 优雅一点
+
+# 再查是否被 init respawn（应出现新 pid）
+pidof composer_stub
+
+若 `pidof` 空，但进程名带路径，可试：
+kill -9 $(pidof /bin/composer_stub)
+
+# 或
+killall -9 composer_stub
+
+### 若平台也有 stop/start（和 weston 类似时再试）
+
+stop composer_stub
+start composer_stub
+
+不保证一定有；没有就继续用 `kill`。
+
+### 自动化侧对应写法
+经 `cluster_uart`（与 `TC_CSOC_FAULT_005` 相同）：
+pids = gfwk.uart_pids(uart, "composer_stub") # 或 " /bin/composer_stub" 以 pidof 能匹配为准
+uart.get_cmd_output(f"kill -9 {' '.join(pids)}")
+```
+### 注意
+
+- 跑 GTMP 时先关掉占用该串口的 picocom，否则易空读。
+- 同时用 `adb shell pidof surfaceflinger` 确认 IVI SF 不被连累。
+
+---
 ## 已知风险
 - 跨 SoC 单点 + 双所有权：`sp<Surface>` 两端各持 → cleanup **double-free**；A720 重启共享 fence 未 signal → IVI **UAF/冻屏**。
 - 🔴 **实测缺陷（2026-07-30）**：**kill IVI 的 HWC → A720 `/bin/composer_stub` SIGSEGV**（`wl_proxy_get_version`，libwayland-client），**1:1 复现**。见 [[BUG-kill-HWC-crashes-A720-composer_stub]]。

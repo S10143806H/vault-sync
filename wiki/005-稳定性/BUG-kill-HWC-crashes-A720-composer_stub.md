@@ -25,7 +25,7 @@ updated: 2026-08-03
   2. **a720 串口共享控制台噪声**（时间戳/PID 数字）被 `re.search(\d+)` 当成 `grep -c` 计数 → 误报崩溃次数 → 已修（`A720CNT=` 唯一标记隔离）
 - 修复提交：autocase `b9fc05da`(B2) / `e7373ab4`(串口计数) / `7b38e44a`(汇总三态措辞)；分析 bot KB 加 **G5** 排除项（exit 101=健康自恢复）。
 
-## 一句话（原始发现，旧构 831）
+## 原始发现 831
 kill 掉 IVI(Android) 侧的 HWC(composer HAL) 后，**A720(仪表, Linux) 侧的 `/bin/composer_stub` 立即 SIGSEGV 崩溃**（挂在 libwayland-client 的悬空 proxy 上），**每 kill 一次崩一次，1:1 稳定复现**。IVI 本机显示能自恢复，但跨 SoC 接收端不做保护、直接段错误。
 
 ## 环境
