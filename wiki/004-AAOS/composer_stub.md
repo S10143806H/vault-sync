@@ -9,9 +9,6 @@ tags:
 platform: gua / guav100 (AAOS)
 created: 2026-07-28
 ---
-
-# composer_stub
-
 **走廊传递员**：IVI SoC 侧的**跨 SoC 显示桥**。 [[Surface Flinger]] 把要显示到仪表的那一层合成好后交给它，它对 SF **假装自己是一个 display/composer 目标（stub=桩）**，实际把帧转发到隔壁 [[仪表|A720 Cluster]]。
 
 ## 拓扑：座舱是多颗 SoC
@@ -51,7 +48,6 @@ flowchart LR
 | **IVI(Android) 发送端** | `vendor.gua.hardware.cluster-service` + `gipc_sdd` | 把 IVI 合成的仪表层经 GIPC/SHMEM 送出 |
 | **A720(Linux) 接收端** | **`/bin/composer_stub`** | **Wayland 客户端**：收 IVI 帧交给 [[Weston]] 上仪表屏 |
 
-> 之前"本平台无 composer_stub"是**只看了 IVI 侧**；真正叫 `composer_stub` 的是 **A720 上的 `/bin/composer_stub`**（bionic 风格进程，`binder:xxx` 线程 + libwayland-client）。
 
 ## 已知风险
 - 跨 SoC 单点 + 双所有权：`sp<Surface>` 两端各持 → cleanup **double-free**；A720 重启共享 fence 未 signal → IVI **UAF/冻屏**。

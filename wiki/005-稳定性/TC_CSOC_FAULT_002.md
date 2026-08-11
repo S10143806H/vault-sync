@@ -9,7 +9,7 @@ status: passed
 tested_on: 2026-08-01
 ---
 
-# TC_CSOC_FAULT_002 — kill composer_stub 跨SoC投屏恢复 【已测通过】
+# TC_CSOC_FAULT_002 — kill [[composer_stub]] 跨SoC投屏恢复 【已测通过】
 
 > **【已测通过】 实测通过（2026-07-31/08-01, SG0286, fw 831）**：3 轮 kill 投屏桥均 ~0.05s 恢复，无级联/墓碑。
 
@@ -77,7 +77,27 @@ adb -s A41AEC42 shell kill -9 <投屏桥pid>                          # 3. 杀�
 adb -s A41AEC42 shell pidof vendor.gua.hardware.cluster-service   # 4. 等2秒→应出新pid
 adb -s A41AEC42 shell pidof surfaceflinger                        # 5. SF 应不变
 ```
-自动化：`CSOC_FAULT_ROUNDS=3 pytest cases/MultiMedia/GPU/CrossSoc/TC_CSOC_FAULT_002.py --bench=<yaml> -v`
+
+```
+adb root
+adb shell pidof vendor.gua.hardware.cluster-service # 或 gipc_sdd / composer_stub
+
+adb shell pidof surfaceflinger # 记基线
+
+# 骤死
+
+adb shell kill -9 $(pidof vendor.gua.hardware.cluster-service)
+
+# ≤10s 再查应有新 pid；SF pid 应不变
+
+# 优雅停起（服务名以 getprop/init 为准，可能与进程名不同）
+
+adb shell setprop ctl.stop <svc>
+
+sleep 2
+
+adb shell setprop ctl.start <svc>
+```
 
 ## ⑥ 易出 bug 的环节（重点）
 | 环节 | 为什么易出 bug | 判据 |

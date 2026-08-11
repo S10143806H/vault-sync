@@ -40,7 +40,7 @@ kill composer HAL 进程后，是一条**连锁反应**：
 3. `init` 把 composer HAL + [[SurfaceFlinger|SF]] 都重新拉起 → 画面恢复
 4. **后排屏(HWC display 1) 不会自动亮**，需重新发 VHAL 命令唤醒（否则误判为"没恢复"）
 
-> 所以 HWC 和 SF 是"绑在一起"的：kill HWC ≈ kill 半条显示链，SF 必然连坐。这与 kill composer_stub/weston（只影响跨 SoC 投屏、IVI SF 不受连累）**不同**。
+> 所以 HWC 和 SF 是"绑在一起"的：kill HWC ≈ kill 半条显示链，SF 必然连坐。这与 kill [[composer_stub]]/[[Weston|weston]]（只影响跨 SoC 投屏、IVI SF 不受连累）**不同**。
 
 ## 我们预期什么（判据）
 
@@ -51,7 +51,7 @@ kill composer HAL 进程后，是一条**连锁反应**：
 | 无 double-free | 新增 tombstone 不含 `double free / UAF` |
 | 服务自启动 | composer 是 init 托管、**非 oneshot**（否则不恢复属配置问题） |
 
-> 完整用例与运行方法见 [[TC_HWC_FAULT_004]]；同类对比见 [[GFWK kill-恢复类测试]]。
+> 完整用例与运行方法见 [[TC_HWC_FAULT_004]]；同类对比见 [[GFWK kill-恢复类测试]]
 
 ---
 

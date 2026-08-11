@@ -9,10 +9,7 @@ status: passed
 tested_on: 2026-08-01
 ---
 
-# TC_CSOC_FAULT_005 — kill weston (A720 Cluster 合成器) 恢复 
-
-> **【已测通过】 实测通过**：weston 被 kill 后由 init respawn 自恢复，IVI 侧无 cascade crash。
-
+# TC_CSOC_FAULT_005 — kill [[weston]] (A720 Cluster 合成器) 
 ## ① 一句话
 **杀掉 A720 仪表侧的"合成器"weston（相当于仪表屏的 SurfaceFlinger），看它能否被拉起、仪表屏恢复，且不连累 IVI。**
 
@@ -70,7 +67,7 @@ sequenceDiagram
     T->>ADB: pidof surfaceflinger → 502(没变=无cascade)
 ```
 
-## ⑤ 本地复现（weston 在 A720, 经串口, 非 adb）
+## ⑤ 复现指令
 ```bash
 # 在 a720 串口终端(prompt sh-5.2#)，逐条：
 pidof weston            # 1. 看 weston pid(可能多个)

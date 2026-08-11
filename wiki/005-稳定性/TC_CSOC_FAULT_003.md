@@ -78,8 +78,8 @@ CSOC_P003_ROUNDS=3 pytest cases/MultiMedia/GPU/CrossSoc/TC_CSOC_FAULT_003.py --b
 **GTMP**：绑**含 a720 串口 + 电源继电器**资源的台架（避开 `e0y`）→ 勾用例 → 提交。
 
 ## 关联
-- 同链路 → [[TC_CSOC_FAULT_004]]（GIPC 断）｜[[TC_CSOC_FAULT_002]]（composer_stub）｜TC_CSOC_FAULT_001（fence UAF）
-- 概念 → [[GIPC]]｜[[SHMEM]]｜[[fence]]｜[[RAMdump]]
+- 同链路 → [[TC_CSOC_FAULT_004]]（GIPC 断）｜[[TC_CSOC_FAULT_002]]（[[composer_stub]]）｜TC_CSOC_FAULT_001（fence UAF）
+- 概念 → [[GIPC]]｜[[SHMEM]]｜[[composer_stub]]｜[[Fence|fence]]｜[[RAMdump]]
 - 总览 → [[GFWK 稳定性测试用例全量清单]]｜[[000-GFWK图形框架总览]]
 
 ## 📚 延伸阅读

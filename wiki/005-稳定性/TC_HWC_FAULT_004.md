@@ -11,8 +11,6 @@ updated: 2026-08-01
 
 # TC_HWC_FAULT_004 — kill HWC 恢复 【已测通过】
 
-> **【已测通过】台架实测（2026-08-01, SG0286, fw 831）**：5 轮 kill HWC 均过就绪门恢复；composer_stub 缺陷修复后跨SoC断言转绿。
-
 ## ① 一句话
 **杀掉"把合成好的帧真正推给屏幕的硬件合成器"HWC，看主屏/后排/仪表能不能都恢复、且不连累别的 SoC。**
 
@@ -70,6 +68,7 @@ sequenceDiagram
 ```bash
 adb -s A41AEC42 root
 adb -s A41AEC42 shell "ps -A -o NAME | grep -iE 'graphics.composer|hwc[0-9]?-service' | grep -iv pq"  # 找HWC
+# android.hardware.composer.hwc3-service.gua
 adb -s A41AEC42 shell pidof <HWC名>                 # HWC pid
 adb -s A41AEC42 shell kill -9 <HWC pid>             # 杀(连带SF重启)
 adb -s A41AEC42 shell pidof surfaceflinger          # SF也换新pid
@@ -82,6 +81,10 @@ adb -s A41AEC42 shell 'screencap -d <display-id> -p /data/local/tmp/x.png; stat 
 dmesg | grep -iE 'composer_stub.*segfault'
 ```
 自动化：`HWC_FAULT_ROUNDS=3 pytest cases/MultiMedia/GPU/Hwc/TC_HWC_FAULT_004.py --bench=<yaml> -v`
+
+现象：
+1. kill HWC 会导致sf相关的两个屏幕黑屏，cluster投屏小车消失
+2. 自动恢复后两个屏幕重新点亮，投屏恢复，投屏小时恢复
 
 ## ⑥ 易出 bug 的环节（重点）
 | 环节 | 为什么易出 bug | 判据/铁律 |

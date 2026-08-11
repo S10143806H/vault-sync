@@ -36,7 +36,7 @@ flowchart LR
 ## ② 概念（读用例前的名词底座）
 - 角色链：[[SurfaceFlinger|SF]]（总合成器）→ [[HWC]]（挂墙工）→ [[Gralloc]] / [[dma-buf heap]]（发纸/纸库）→ [[GraphicBuffer]] / [[反压 (back-pressure)]]（白纸流转）
 - 故障与取证：[[SIGKILL （kill -9）]] · [[tombstone（墓碑 验尸报告）]] · [[RAMdump]] · [[ANR]] · [[断言（assert）]]
-- 跨 SoC：[[GIPC]] · composer_stub（投屏桥）· weston（A720 合成器）
+- 跨 SoC：[[GIPC]] · [[composer_stub]]（投屏桥）· [[Weston|weston]]（A720 合成器）
 
 ## ③ 方法论（一切用例的骨架）
 - [[GFWK kill-恢复类测试]] —— **打晕关键进程→看多快拉起、画面是否恢复、是否连累别人**；四阶段套路（基线→注入→恢复判定→三态断言）
