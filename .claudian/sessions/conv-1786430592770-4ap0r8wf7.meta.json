@@ -1,0 +1,22 @@
+{
+  "id": "conv-1786430592770-4ap0r8wf7",
+  "providerId": "claude",
+  "title": "Automate markdown commits to GitHub",
+  "titleGenerationStatus": "success",
+  "createdAt": 1786430592783,
+  "lastActivityAt": 1786430642123,
+  "sessionId": "d443935a-2b12-4578-9247-caf11b3a4094",
+  "selectedModel": "opus",
+  "providerState": {
+    "providerSessionId": "d443935a-2b12-4578-9247-caf11b3a4094"
+  },
+  "usage": {
+    "model": "opus",
+    "inputTokens": 2,
+    "cacheCreationInputTokens": 9093,
+    "cacheReadInputTokens": 26362,
+    "contextWindow": 1000000,
+    "contextTokens": 35457,
+    "percentage": 4
+  }
+}
