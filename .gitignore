@@ -1,0 +1,11 @@
+# Claudian 会话缓存
+.claudian/
+
+# Obsidian 本地状态（不同步工作区/缓存）
+.obsidian/workspace.json
+.obsidian/workspace-mobile.json
+.obsidian/cache
+
+# 系统文件
+.DS_Store
+Thumbs.db
