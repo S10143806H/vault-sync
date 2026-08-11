@@ -67,5 +67,5 @@ created: 2026-08-07
 STRESS_006 判黑只查"非黑"，测不到撕裂/花屏/闪屏，且 Cluster 非主屏仅记录。可补：连续多帧 `screencap` 差分/SSIM（闪屏=帧间剧变、冻屏=帧间零变化）或录屏逐帧分析；撕裂需 panel 侧信号，更可靠是监控 SERDES/Weston vsync 计数（见 [[SERDES链路]] 用例）。
 
 ## 关联
-- 用例 [[TC_GFWK_STRESS_006]] · 栈层 [[Weston]] / [[跨SoC]] / [[SERDES链路]] / [[HWC]]
+- 用例 [[TC_GFWK_STRESS_006]] · 栈层 [[Weston]] / [[composer_stub]] / [[跨SoC]] / [[SERDES链路]] / [[HWC]]
 - 总览 [[GFWK 稳定性测试用例全量清单]]

@@ -37,4 +37,4 @@ STR_005_ROUNDS=3 pytest cases/MultiMedia/GPU/Str/TC_GFWK_STR_005.py --bench=/hom
 `STR_005_ROUNDS`(200) · `STR_MODE`(display/mem) · `STR_005_SUSPEND`(5) · `STR_005_RESUME_SLA`(30) · `GFX_ACTIVITY`(切 GFXBench) · `AUDIO_ACT`(可选音频)
 
 ## 关联
-- 方法 → [[GFWK STR 挂起唤醒稳定性测试]]｜样板 → [[TC_CSOC_RECOVER_001]]（=STR_003）｜概念 → [[GIPC]]｜[[Fence]]｜清单 → [[GFWK 稳定性测试用例全量清单]]
+- 方法 → [[GFWK STR 挂起唤醒稳定性测试]]｜样板 → [[TC_CSOC_RECOVER_001]]（=STR_003）｜概念 → [[GIPC]]｜[[Fence]]｜[[composer_stub]]｜清单 → [[GFWK 稳定性测试用例全量清单]]

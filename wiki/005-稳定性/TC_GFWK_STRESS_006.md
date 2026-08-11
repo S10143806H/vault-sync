@@ -66,7 +66,7 @@ created: 2026-08-04
 | **多屏寻址** | app 枚举 `DisplayManager` 列 display，面板序号(#0/#1/#2/#7)是**它自己的索引**，内部映射到物理 display token。所以**加层用 app 序号、判黑/截屏用物理 id**（两套编号，见 §二）。 |
 | **图层生命周期** | 内部两套容器：`mLayers`(普通 add 层，`clear` 只清这个) + `mirrorSc`+计时器(镜像层，`clear` 不管)。**彻底重置 = `force-stop` 杀进程**，SF 检测客户端死亡回收其名下全部 SurfaceControl 层（见 §三）。 |
 
-**压到栈的哪层**：`wander`+多层叠加主压 [[SurfaceFlinger]] 合成调度 + [[HWC]] overlay 分配/回退 GPU；`mirror` 到 Cluster(A720) 会顺带走 GIPC+SHMEM+composer_stub，压 [[跨SoC]] 通路。
+**压到栈的哪层**：`wander`+多层叠加主压 [[SurfaceFlinger]] 合成调度 + [[HWC]] overlay 分配/回退 GPU；`mirror` 到 Cluster(A720) 会顺带走 [[GIPC]]+[[SHMEM]]+[[composer_stub]]，压 [[跨SoC]] 通路。
 
 ## 一、APK 速用
 
