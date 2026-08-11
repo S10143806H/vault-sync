@@ -1,18 +1,1 @@
-{
-  "hooks": {
-    "PostToolUse": [
-      {
-        "matcher": "Edit|Write|MultiEdit",
-        "hooks": [
-          {
-            "type": "command",
-            "shell": "powershell",
-            "command": "& \"C:\\Users\\XGTech_ZHU\\iCloudDrive\\iCloud~md~obsidian\\AI赋能\\.claude\\hooks\\auto-commit.ps1\"",
-            "async": true,
-            "statusMessage": "Auto-commit .md to GitHub"
-          }
-        ]
-      }
-    ]
-  }
-}
+{}

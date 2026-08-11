@@ -6,6 +6,9 @@
 .obsidian/workspace-mobile.json
 .obsidian/cache
 
+# 机器相关本地设置（各机自持，含 PostToolUse 自动提交 Hook）
+.claude/settings.local.json
+
 # 系统文件
 .DS_Store
 Thumbs.db
