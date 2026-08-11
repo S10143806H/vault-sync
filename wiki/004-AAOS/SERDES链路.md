@@ -29,24 +29,36 @@ created: 2026-08-07
 | **retrain / re-lock** | 链路抖动后重训练次数 |
 | **热插拔** | 远端上下电导致的 link up/down |
 
-## 怎么读(需台架确认实际路径)
-| 读法 | 说明 |
-|---|---|
-| **I2C 读 SER/DES 寄存器** | LOCK bit / error counter / line-fault; 需芯片 I2C 地址 + 寄存器 map(按 GMSL/FPD-Link 数据手册) |
-| **内核 sysfs / debugfs** | 驱动若暴露 `locked`/`link_status`/错误计数 |
-| **dmesg 关键字** | `gmsl`/`fpd`/`link (up\|down)`/`lock`/`unlock`/`retrain`/`line fault` |
+## 怎么读 —— ✅ 台架(A41AEC42)实测确认
+本平台 = **GMSL**：序列器 **MAX96855**(ser@0x40) + 解串器 **MAX96772**(des@0x48)。i2c 被内核驱动占用(`i2cdetect` 显 `UU`)**不能直读寄存器**, 改走 debugfs + dmesg:
 
-## 可做成的稳定性用例
-| 用例 | 注入/动作 | 判据 | 维度 |
+| 源 | 命令 | 含义 |
+|---|---|---|
+| **锁定值** | `cat /sys/kernel/debug/dri/0/<link>/serdes_status`(**会 printk 到 dmesg**) | `[SERDES]...gmsl lock[0x8a]` = 锁定; `0x8a`=des reg0x13 锁定值 |
+| **故障事件** | `dmesg \| grep '[ser:i2c-<bus>]'` | `linklock error`/`pixel clock error`/`LINK_A_LCTRL2=0x0` = 掉链 |
+| **恢复事件** | 同上 | `linklock recovered (was faulty for N checks)` |
+| **DP 重训** | 同上 | `dp train link`→`Link training successful`(重训=瞬断重连) |
+| **内建监控** | `cat .../<link>/fmg_enable`(=1) | 驱动自带 fault monitor, 勿关 |
+| **官方旋钮文档** | `cat .../<link>/help` | 列全部 debugfs |
+
+> 读窗隔离: 先 `echo <marker> > /dev/kmsg` 打标记, 再 `dmesg | sed -n '/<marker>/,$p'`, 避免吃历史 ring buffer 噪声。
+
+**故障注入(安全可逆)**: `echo 1 > /sys/kernel/debug/dri/0/<link>/link/training` —— 官方 debugfs 机制, 触发 DP 全链路重训(瞬断重连)后自愈重锁, **不连累 IVI [[SurfaceFlinger]]**(pid 不变)。
+> 注: DP 重训**不必然**级联出 GMSL `linklock error`(取决于 fmg 轮询是否撞上瞬断窗口), 故恢复判据以 **重训成功 + GMSL 重锁** 为准。
+
+### 台架链路映射 / 已知基线
+| link(debugfs) | ser 总线 | 屏 | 状态 |
 |---|---|---|---|
-| **链路长稳监控** | 周期读 LOCK+误码(挂其它压测旁路) | 不掉 LOCK; 误码增量 ≤ 阈值 | 长稳/监控 |
-| **链路故障注入恢复** | I2C 写 SER 关输出 / GPIO 断链(拔插为人工) | 自动 retrain 重锁 < SLA; 屏恢复不崩 | 故障注入 |
-| **热插拔/上电时序恢复** | 配合 [[TC_GFWK_STRESS_007]] 显示开关 / reboot / STR | 每次上电链路重锁**且屏检测到** | 恢复 |
-| **BER/CRC 监控 + 花屏关联** | 视频压力下读 DES 错误计数 | 误码 ≤ 阈值; 花屏/闪屏时抓链路状态做根因 | 压力/根因 |
-| **多链路隔离** | 断一条(后排)链路 | 不连累仪表/AVM 链路 | 隔离 |
-| **相机 SERDES 链路** | 倒车/AVM 启用监控相机链路 | 相机链路不丢锁/无 line-fault | 摄像头 |
+| `dp2` | i2c-13 | 主屏(panel saf407db1, 2560x1600) | **已锁 0x8a** |
+| `dp1` | i2c-15 | 后排 | 本台架**未接** → `can't read reg 0x13`(ret=-121) 持续报错 = **预期基线, 非缺陷** |
 
-> 最适合做**旁路探针**: 把链路状态采集嵌进已有 kill/显示用例(如 [[TC_HWC_FAULT_004]] kill HWC、[[TC_GFWK_STRESS_007]] 开关屏)同时采, 一箭双雕。可在 `common/Gpu/gfwk_stress_util.py` 加 `serdes_link_status()` 复用(读法确认后)。
+## 已落地用例 ✅
+| 用例 | 注入/动作 | 判据 | 状态 |
+|---|---|---|---|
+| [[TC_SERDES_FAULT_002]] | `echo 1 > link/training` 强制重训(瞬断重连) | 重训成功+GMSL 重锁 < SLA; IVI SF pid 不变; 无 double-free | ✅ 实测通过 |
+| [[TC_SERDES_STRESS_003]] | 负载/长稳下周期读 LOCK+故障事件 | 锁定值恒 0x8a; 零自发故障; 主屏非黑 | ✅ 实测通过 |
+
+> 公共件 `common/Gpu/gfwk_stress_util.py` 已加 `serdes_lock / serdes_train / serdes_events_since / serdes_retrain_result / serdes_mark`。可做**旁路探针**嵌进 [[TC_HWC_FAULT_004]] kill HWC / [[TC_GFWK_STRESS_007]] 开关屏同时采, 一箭双雕。未做: BER/CRC 关联花屏、相机 SERDES 链路、多链路隔离(后排未接)。
 
 ## 与显示栈的关系
 ```

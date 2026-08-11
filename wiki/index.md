@@ -3,7 +3,7 @@
 > 本 vault 的全站目录, 按域分类。karpathy LLM-Wiki 模式: 人读, LLM 维护。
 > 新增/改动记 [[log]]; schema 见根 `CLAUDE.md`。
 
-**共 112 篇**
+**共 114 篇**
 
 ## 000-GenerativeAI — 生成式 AI 基础
 
@@ -80,7 +80,7 @@ _(空)_
 - [[退出码101 vs SIGSEGV（composer_stub 崩溃判定）]]
 - [[重点用例-高亮]] — 重点用例 ❤️（SF / HWC / GFWK 黄色高亮）
 
-## 005-稳定性 — 稳定性测试 (用例·故障·BUG)  (44)
+## 005-稳定性 — 稳定性测试 (用例·故障·BUG)  (46)
 
 - [[2026-08-09-GFWK收严杀进程压测]] — 2026-08-09 GFWK 收严杀进程压测（5用例×5轮）
 - [[ANR]] — ANR - Application Not Responding
@@ -117,6 +117,8 @@ _(空)_
 - [[TC_HWC_FAULT_003]] — TC_HWC_FAULT_003 — 多屏 Layer 故障隔离 (教学版)
 - [[TC_HWC_FAULT_004]] — TC_HWC_FAULT_004 — kill HWC 恢复 (教学版)
 - [[TC_Melo2_AVM_Gear_Func_001 — AVM 环视随挡位切换]]
+- [[TC_SERDES_FAULT_002]] — TC_SERDES_FAULT_002 — SERDES(GMSL) 链路掉链-重训自愈 (教学版)
+- [[TC_SERDES_STRESS_003]] — TC_SERDES_STRESS_003 — SERDES(GMSL) 链路压力/长稳监控 (教学版)
 - [[TC_SF_BOUND_002]] — TC_SF_BOUND_002 — Producer 極限
 - [[TC_SF_BOUND_003]] — TC_SF_BOUND_003 — Consumer 速率極限（Slots 耗盡 / 無死鎖）
 - [[TC_SF_FAULT_001]] — TC_SF_FAULT_001 — kill SurfaceFlinger 恢复 SLA (教学版)
