@@ -1,0 +1,28 @@
+<html lang="zh"><head><meta charset="utf-8">
+<title>Reference · 指标术语表</title>
+<link rel="stylesheet" href="../assets/course.css">
+</head><body><div class="wrap">
+<header class="lesson">
+  <div class="kicker">Reference · Glossary</div>
+  <h1>指标术语表</h1>
+  <p class="sub">全课统一用词。新课出现的术语先在此登记。</p>
+</header>
+
+<table>
+<tr><th>术语</th><th>定义</th><th>在 autocase 里的例子</th></tr>
+<tr><td><b>指标 metric</b></td><td>数据源+度量+阈值判定 组成的一条判定链</td><td><code>screen_not_black</code></td></tr>
+<tr><td><b>数据源 source</b></td><td>原始数据来自哪里,决定实时性/可靠性</td><td>截图 / dumpsys / Prometheus</td></tr>
+<tr><td><b>度量 measure</b></td><td>把原始数据降维成一个可比标量</td><td><code>image_bright_ratio</code> → 2.2%</td></tr>
+<tr><td><b>阈值 threshold</b></td><td>判定用的界线;没有它只是日志</td><td><code>min_bright_ratio=0.0005</code></td></tr>
+<tr><td><b>判据指标 assertion</b></td><td>gate 用例 通过/失败 的指标</td><td>判屏黑 → FAIL</td></tr>
+<tr><td><b>监控指标 telemetry</b></td><td>只记录看趋势,不 gate 结果</td><td>FPS / GPU / 内存 snapshot</td></tr>
+<tr><td><b>gauge</b></td><td>可增可减的瞬时量</td><td><code>sys_gpu_usage</code>(45%)</td></tr>
+<tr><td><b>counter</b></td><td>只增不减的累计量</td><td>崩溃次数 / tombstone 数</td></tr>
+<tr><td><b>基线 baseline</b></td><td>正常态的参考值,监控指标据此判"是否恢复"</td><td>kill 前的 FPS</td></tr>
+<tr><td><b>误判 false verdict</b></td><td>阈值/度量选错导致的错误判定</td><td>旧 <code>mean&lt;5</code> 误判空调屏为黑</td></tr>
+</table>
+
+<nav class="links">
+  <a href="../lessons/0001-what-is-a-metric.html">← Lesson 01</a>
+</nav>
+</div></body></html>

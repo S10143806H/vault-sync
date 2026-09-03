@@ -1,0 +1,126 @@
+<html lang="zh"><head><meta charset="utf-8">
+<title>Lesson 01 · 指标是什么</title>
+<link rel="stylesheet" href="../assets/course.css">
+</head><body><div class="wrap">
+
+<header class="lesson">
+  <div class="kicker">Lesson 01 · 指标 Metrics</div>
+  <h1>一个「指标」到底是什么</h1>
+  <p class="sub">3 个部件:数据源 → 度量 → 阈值判定。用你自己的 <code>screen_not_black</code> 拆开看。</p>
+</header>
+
+<p><b>本课一个赢:</b> 学完你能拿起 gfwk 里<em>任意</em>一个判据,一眼说出它的
+数据源 / 度量 / 阈值——这是把性能数据接进 kill SF 的前提。</p>
+
+<h2>① 定义:指标 = 可测量的量 + 判定规则</h2>
+<p>测试里的一个「指标」(metric)不是一个数,而是<b>三个部件</b>组成的一条判定链。缺任何一个都不成立:</p>
+
+<div class="parts">
+  <div class="part"><b>1. 数据源 Source</b> — 这个数从哪来?
+    截图像素?<code>dumpsys</code>?Prometheus?决定了实时性和可靠性。</div>
+  <div class="part"><b>2. 度量 Measure</b> — 把原始数据压成<em>一个可比的数</em>。
+    如"亮像素占比 2.2%""GPU 45%"。这一步是<b>降维</b>:一张图 → 一个标量。</div>
+  <div class="part"><b>3. 阈值判定 Threshold + Verdict</b> — 一条规则把数变成 通过/失败。
+    如 <code>ratio &gt;= 0.0005</code>。<b>没有阈值的数不是指标,只是日志。</b></div>
+</div>
+
+<blockquote>核心心法:<b>指标的价值不在"测到了数",在"数能自动变成判断"。</b>
+一个数据源如果没配阈值,它只是监控;配了阈值并 gate 结果,它才是判据。</blockquote>
+
+<h2>② 拆你自己的代码:screen_not_black</h2>
+<p>这是你 <code>common/Gpu/gfwk_stress_util.py</code> 里正在用的判屏逻辑。三部件一一对上:</p>
+
+<pre><code># 数据源:adb 截图 → 本地 png
+aw.adb_shell(aw.dut.car0, f"screencap {dsel}-p {rp}")
+aw.adb_pull(aw.dut.car0, rp, lp)
+
+# 度量:一张图 → 一个标量(亮像素占比)
+ratio = image_bright_ratio(lp)          # np.count_nonzero(gray>60)/gray.size
+
+# 阈值 + 判定:标量 → True/False
+ok = ratio &gt;= min_bright_ratio          # 默认 0.0005 (0.05%)
+</code></pre>
+
+<table>
+  <tr><th>部件</th><th>在代码里是谁</th><th>值示例</th></tr>
+  <tr><td>数据源</td><td><code>screencap</code> + <code>adb_pull</code></td><td>一张 PNG</td></tr>
+  <tr><td>度量</td><td><code>image_bright_ratio()</code></td><td>空调屏 2.2% / 纯黑 0%</td></tr>
+  <tr><td>阈值判定</td><td><code>ratio &gt;= 0.0005</code></td><td>2.2% → 非黑 ✓</td></tr>
+</table>
+
+<p class="cite">为什么阈值是"亮像素占比"而不是"平均亮度":空调屏黑底+时钟,均亮≈4,
+旧 <code>mean&lt;5</code> 会误判黑;换成"有没有亮像素"就稳了。<b>选对度量 = 指标成败的关键。</b></p>
+
+<h2>③ 两类指标:判据 vs 监控(这决定性能数据怎么接)</h2>
+<table>
+  <tr><th></th><th>判据指标 assertion</th><th>监控指标 telemetry</th></tr>
+  <tr><td>作用</td><td>gate 用例 通过/失败</td><td>只记录,看趋势</td></tr>
+  <tr><td>例子</td><td><code>screen_not_black</code></td><td>FPS / GPU / 内存</td></tr>
+  <tr><td>失败时</td><td>用例 FAIL</td><td>写 log / 告警,不挂用例</td></tr>
+  <tr><td>要求</td><td>阈值必须稳、误判率低</td><td>先积累数据再定阈值</td></tr>
+</table>
+
+<div class="win">
+  <div class="kicker">应用到你的目标</div>
+  性能数据(<code>sys_gpu_usage</code> 等)因为有采集延迟 + DB 会抽风,
+  <b>第一步应作「监控指标」</b>:kill SF 后 snapshot 一次进 log。跑几轮确认数据靠谱、
+  波动范围清楚了,再升级成「判据指标」加阈值。—— 这正是上一轮我建议"先软监控"的原因,
+  现在你能用三部件语言解释<em>为什么</em>了。
+</div>
+
+<h2>④ 检验(从记忆里调取,别翻上文)</h2>
+
+<div class="quiz" id="quiz">
+  <div class="qblock">
+    <p class="q">Q1. <code>min_bright_ratio=0.0005</code> 是指标三部件里的哪个?</p>
+    <button data-ok="0">数据源 · source</button>
+    <button data-ok="0">度量值 · measure</button>
+    <button data-ok="1">阈值判 · threshold</button>
+    <div class="fb"></div>
+  </div>
+  <div class="qblock">
+    <p class="q">Q2. 性能指标 <code>sys_gpu_usage</code> 现阶段应当作哪类?</p>
+    <button data-ok="0">判据指标 · gate</button>
+    <button data-ok="1">监控指标 · record</button>
+    <button data-ok="0">崩溃指标 · crash</button>
+    <div class="fb"></div>
+  </div>
+  <div class="qblock">
+    <p class="q">Q3. <code>image_bright_ratio</code> 返回 2.2%,判定结果是?</p>
+    <button data-ok="0">屏幕全黑 · fail</button>
+    <button data-ok="1">屏有内容 · pass</button>
+    <button data-ok="0">无法判读 · skip</button>
+    <div class="fb"></div>
+  </div>
+</div>
+
+<div class="ask">
+  <b>卡住就问我。</b> 我是你的教练——想深入任一部件(比如"怎么给 GPU 定阈值""dumpsys 能不能当数据源"),
+  直接追问。下一课预定:<b>把 <code>perf_snapshot</code> 写进 gfwk</b>(动手接一个真实监控指标)。
+</div>
+
+<p><b>主源阅读(最高信任):</b> Prometheus 官方《Metric types》——
+搞懂 counter/gauge 区别,才知道 <code>sys_gpu_usage</code>(gauge)和崩溃计数(counter)阈值写法为何不同。
+<span class="cite"><a href="https://prometheus.io/docs/concepts/metric_types/">prometheus.io/docs/concepts/metric_types</a></span></p>
+
+<nav class="links">
+  <a href="../reference/metric-glossary.html">📖 指标术语表</a>
+  <a href="../../teach-metrics/MISSION.md">🎯 Mission</a>
+</nav>
+
+</div>
+<script>
+document.querySelectorAll('#quiz .qblock').forEach(function(b){
+  var fb=b.querySelector('.fb'), done=false;
+  b.querySelectorAll('button').forEach(function(btn){
+    btn.onclick=function(){
+      if(done)return; done=true;
+      var ok=btn.dataset.ok==='1';
+      btn.className=ok?'right':'wrong';
+      if(!ok)b.querySelector('button[data-ok="1"]').className='right';
+      fb.textContent=ok?'对 ✓':'再想想三部件的定义 ↑';
+    };
+  });
+});
+</script>
+</body></html>
