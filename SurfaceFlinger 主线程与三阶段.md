@@ -102,16 +102,20 @@ flowchart LR
 
 > 代码位置根目录：`frameworks/native/services/surfaceflinger/`（下表 AAOS 代码列均相对此目录）
 
-| 概念              | 是什么                                                            | 干什么                                                          | AAOS 代码位置 |
-| --------------- | -------------------------------------------------------------- | ------------------------------------------------------------ | ------------- |
-| **main thread** | SF 的单线程事件循环（`MessageQueue`/`onMessageReceived`），vsync 一到就醒来跑一帧 | 唯一操作图层树的线程；它一卡 → 全屏卡/黑。抓它的栈是定位掉帧/黑屏的起点                       | `Scheduler/MessageQueue.cpp` → `MessageQueue::Handler::dispatchFrame`；`Scheduler/Scheduler.cpp` → `Scheduler::onFrameSignal` |
-| **① commit**      | 帧的准备阶段：把 App 提交的事务（transaction）和新 buffer 锁进这一帧的状态              | 处理 [[SurfaceControl]] 事务、latch 最新 buffer、算可见区域/几何；决定"这帧长什么样" | `SurfaceFlinger.cpp` → `SurfaceFlinger::commit()` |
-| **② composite**   | 合成阶段：把各 layer 按 z 序合成                                          | 决定每层走 [[HWC]] overlay（硬件叠加省电）还是 GPU/RenderEngine 客户端合成       | `SurfaceFlinger.cpp` → `SurfaceFlinger::composite()` → `mCompositionEngine->present()`；`CompositionEngine/src/Output.cpp` → `Output::present()` / `prepareFrame()`(选 HWC/GPU) / `finishFrame()`(GPU 合成) |
-| **③ present**     | 上屏阶段：把合成结果交给 [[HWC]] 送显示屏；实为 `composite()` 内部收尾子步骤（`postFramebuffer`） | 提交 present fence，等待上屏；`--timestats` 的 present time 即此步       | `CompositionEngine/src/Output.cpp` → `Output::postFramebuffer()` → `presentAndGetFrameFences()`；`DisplayHardware/HWComposer.cpp` → `HWComposer::presentAndGetReleaseFences()` |
+| 概念              | 是什么                                                                   | 干什么                                                          | AAOS 代码位置                                                                                                                                                                                               |
+| --------------- | --------------------------------------------------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **main thread** | SF 的单线程事件循环（`MessageQueue`/`onMessageReceived`），vsync 一到就醒来跑一帧        | 唯一操作图层树的线程；它一卡 → 全屏卡/黑。抓它的栈是定位掉帧/黑屏的起点                       | `Scheduler/MessageQueue.cpp` → `MessageQueue::Handler::dispatchFrame`；`Scheduler/Scheduler.cpp` → `Scheduler::onFrameSignal`                                                                            |
+| **① commit**    | 帧的准备阶段：把 App 提交的事务（transaction）和新 buffer 锁进这一帧的状态                     | 处理 [[SurfaceControl]] 事务、latch 最新 buffer、算可见区域/几何；决定"这帧长什么样" | `SurfaceFlinger.cpp` → `SurfaceFlinger::commit()`                                                                                                                                                       |
+| **② composite** | 合成阶段：把各 layer 按 z 序合成                                                 | 决定每层走 [[HWC]] overlay（硬件叠加省电）还是 GPU/RenderEngine 客户端合成       | `SurfaceFlinger.cpp` → `SurfaceFlinger::composite()` → `mCompositionEngine->present()`；`CompositionEngine/src/Output.cpp` → `Output::present()` / `prepareFrame()`(选 HWC/GPU) / `finishFrame()`(GPU 合成) |
+| **③ present**   | 上屏阶段：把合成结果交给 [[HWC]] 送显示屏；实为 `composite()` 内部收尾子步骤（`postFramebuffer`） | 提交 present fence，等待上屏；`--timestats` 的 present time 即此步       | `CompositionEngine/src/Output.cpp` → `Output::postFramebuffer()` → `presentAndGetFrameFences()`；`DisplayHardware/HWComposer.cpp` → `HWComposer::presentAndGetReleaseFences()`                           |
 
 > [!example] 调用链与复现原理
 > **调用链（Android 13+）**：`Scheduler → MessageQueue frame callback → commit() → composite() → (内部) postFramebuffer/present`
 > 给 `composite()` 加 `sleep(3s)` → 主线程被拖住 → 下游 `dequeueBuffer failed -110` + `Skipped N frames`（Day 4 复现原理）。
+
+> [!info] `onMessageReceived` 取的是什么 message
+> 取的是 SF **内部** `MessageQueue`（`Looper` based）的**事件码 `what`**（`INVALIDATE`→commit / `REFRESH`→composite），由 **vsync** 经 `DispSyncSource` → `dispatchInvalidate` 投递。它只是「该跑哪一步」的节拍信号，**不是** App 的 IPC 消息或事务数据。
+> 真正的数据（`SurfaceControl` 事务、新 buffer）走另一条路：`setTransactionState()` 存入 `mTransactionQueue`，等 `INVALIDATE` 唤醒后在 **commit 阶段**才 latch 进来。
 
 > [!important] present 的真实位置
 > `present` **不是**与 `composite` 并列的第三步，而是 `composite()` 内部的收尾子步骤（`postFramebuffer`）。概念上仍是「三阶段」，调用栈上 present 嵌在 composite 里。
