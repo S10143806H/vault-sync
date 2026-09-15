@@ -19,7 +19,7 @@ adb shell dumpsys SurfaceFlinger | head -200
 
 ---
 
-## 1. 🧭 Display 拓扑（谁是时钟源）
+## 1. 🧭 Display 拓扑
 
 ```mermaid
 flowchart LR
