@@ -1,11 +1,12 @@
 
 ## 第 1 章  Android 代码准备、编译及虚拟机启动
 
-1. 课程简介
-2. Android 源代码准备
+1. [[Introduction -Display Related Hardware]]
+2. [[Android 源代码准备]]
 3. [[代码编译]]
 4. 启动虚拟机
 5. 课程作业
+
 
 ## 第 2 章  Android HAL 体系结构与设计思想
 

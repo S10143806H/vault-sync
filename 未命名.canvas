@@ -1,0 +1,11 @@
+{
+	"nodes":[
+		{"id":"dad7e8bd9f253a36","x":-125,"y":60,"width":250,"height":50,"type":"text","text":"DDIC"},
+		{"id":"ad6e7b937c72862a","x":-125,"y":160,"width":250,"height":60,"type":"text","text":"Panel"},
+		{"id":"b6a932018810fcb7","x":-125,"y":-120,"width":250,"height":50,"type":"text","text":"SoC draw + compositor"},
+		{"id":"bb3b1983cbd3f50f","x":20,"y":-40,"width":250,"height":60,"type":"text","text":""}
+	],
+	"edges":[
+		{"id":"49dc906ed076f6b1","fromNode":"b6a932018810fcb7","fromSide":"bottom","toNode":"dad7e8bd9f253a36","toSide":"top"}
+	]
+}

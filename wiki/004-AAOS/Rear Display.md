@@ -18,6 +18,7 @@ updated: 2026-08-04
 > 新控制路径：开合已从 VHAL/CAN 改走 [[vendor AIDL]] `IGuaScreenControl`（电机 open/close/setAngle/getStatus），AIDL 压测见 [[TC_GFWK_STRESS_008]]。
 
 ## 平台探测
+
 ```bash
 adb shell getprop persist.gua.car.model     # CHERY-V27 / CHERY-T29 / CHERY-ET(E0Y)
 ```
@@ -25,34 +26,51 @@ adb shell getprop persist.gua.car.model     # CHERY-V27 / CHERY-T29 / CHERY-ET(E
 
 ---
 
-## V27 — VHAL inject-event（信号量控制）
+## V27 — [[VHAL]] inject-event（信号量控制）
+假装整车硬件下发了一条车辆属性
 开屏约延迟 1s：
+
 ```bash
+# VHAL 服务(车辆 HAL 的 AIDL 接口) android.hardware.automotive.vehicle.IVehicle/default 
+# VehicleProperty ID (一个车辆属性,这里对应屏幕/电源类)
+# -a area id
+# -b 属性值(bytes/int 值)
+
 # 开（不带 CAN）
 adb shell "dumpsys android.hardware.automotive.vehicle.IVehicle/default --inject-event 560992868 -a 0 -b 0x344c"
 # 关
 adb shell "dumpsys android.hardware.automotive.vehicle.IVehicle/default --inject-event 560992868 -a 0 -b 0x324e"
+
+
 ```
 
-三个变体（来自 `common/general_settings.py`）：
+`common/general_settings.py`
 
-| 动作 | magic (-b) | 常量 |
-|---|---|---|
-| 开（不带 CAN） | `0x344c` | `THIRD_SCREEN_ON_WITHOUT_CANN` |
-| 开（带 CAN） | `0x314f` | `THIRD_SCREEN_ON_WITH_CANN` |
-| 关 | `0x324e` | `THIRD_SCREEN_OFF` |
+| 动作        | magic (-b) | 常量                             |
+| --------- | ---------- | ------------------------------ |
+| 开（不带 CAN） | `0x344c`   | `THIRD_SCREEN_ON_WITHOUT_CANN` |
+| 开（带 CAN）  | `0x314f`   | `THIRD_SCREEN_ON_WITH_CANN`    |
+| 关         | `0x324e`   | `THIRD_SCREEN_OFF`             |
+
 
 ---
 
 ## T29 — am broadcast（电机开合屏）
 T29 后排屏为**电机驱动可开合**，用广播控制，另有角度接口：
 ```bash
-# 开
+# 打开后排屏（degree 由系统默认处理）
 adb shell am broadcast -a com.gua.action.OPEN_REAR_SCREEN -p com.android.car
-# 关
+
+# 关闭后排屏
 adb shell am broadcast -a com.gua.action.CLOSE_REAR_SCREEN -p com.android.car
+
 # 设角度（示例 55 度）
-adb shell service call vendor.gua.hardware.screenmotor.IGuaScreenControl/default 3 i32 0 i32 55  # setAngle
+adb shell service call vendor.gua.hardware.screenmotor.IGuaScreenControl/default 3 i32 2 i32 55  # setAngle 2：displayID
+# 设目标角度（把 110 换成你要的度数）
+adb shell settings put global rear_screen_target_angle 110
+
+# 语音控制
+adb shell dumpsys activity service com.gua.car.aiagent/.AiService e2e --text "打开后排屏"
 ```
 
 ---
@@ -76,3 +94,20 @@ adb shell service call vendor.gua.hardware.screenmotor.IGuaScreenControl/default
 - 用例 [[TC_GFWK_STRESS_004]]（后排屏开合压测，V27 背光判据 + T29 best-effort）
 - 同族 [[TC_GFWK_STRESS_005]]（环境光/自动亮度）
 - 总览 [[000-GFWK图形框架总览]] · 映射 [[06-GFWK如何映射到测试用例]]
+
+
+---
+## 20260831 Personal Notes
+
+``` bash
+# get ro prop
+adb shell
+getprop | grep "ro"
+
+# serial  -> A41AEC42
+adb -s A41AEC42 get-serialno
+# car type: qrt29 / goldencar            
+adb -s A41AEC42 shell getprop ro.product.name 
+
+```
+

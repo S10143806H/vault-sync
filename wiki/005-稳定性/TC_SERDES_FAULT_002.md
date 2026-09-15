@@ -71,7 +71,7 @@ adb shell pidof surfaceflinger    # 应 == $sf0
 > **本用例结论：GMSL 链路重训自愈健康、上层隔离良好**(实测 <1s 重锁, SF pid 全程不变)。对照 [[TC_CSOC_FAULT_002]](投屏桥)同为"显示传输层"故障注入。
 
 ## 关联
-- 机制 → [[SERDES链路]] · [[显示链路]] · [[硬件拓扑]] · [[Rear Display]]
+- 机制 → [[SERDES链路]] · [[显示链路]] · [[硬件拓扑]] · [[wiki/004-AAOS/Rear Display]]
 - 同类监控 → [[TC_SERDES_STRESS_003]]｜上层对照 → [[TC_HWC_FAULT_004]] [[TC_SF_FAULT_001]]
 - 总览 [[GFWK 稳定性测试用例全量清单]]
 
