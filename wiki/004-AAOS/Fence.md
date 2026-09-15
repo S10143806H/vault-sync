@@ -40,6 +40,7 @@ SF 看到举手 → 才敢拿这块 buffer 去合成
 ## 两类 fence 相关缺陷/风险（本项目实测）
 - **fence UAF（真崩溃）**：持已释放的 fence 还 `ppoll` → [[SIGSEGV]]/panic（GPU满载+重启SF/HWC 致信令不完整，KB G2；`sync_file_poll`+`remote fence timeout reclaimed`）
 - **used fence 未 signal（冻屏）**：IVI panic 释放 IPC 资源时 used fence 没 signal → Cluster 等永不到的 fence 冻屏（KB G3）
+- **present fence 长时间不 signal（死屏）**：某 display 的 present fence（「显示完成」举手）长时间不 signal → 画面定格。实测日志 `FENCE GAP display=100 gap=16.9s`（正常一帧仅 16.67ms），起因为 pacesetter 中控合成卡住、follower 屏跟着停摆。观测点：`Has 1 unfired fences` 偶尔 1 个属正常，**积压 = 出事**（`FENCE_STALL` 路径盯此数）。详见 [[SurfaceFlinger 主线程与三阶段]]
 - **SELinux 策略缺口**：实测 `composer_stub_t` `use` 属于 `weston_t` 的 `sync_file` fd 被 `avc: denied`（当前 [[SELinux|permissive]] 放行）；转 enforcing 会拦截跨 SoC fence 传递 → 需补 policy
 
 详见 [[05-Fence与跨SoC同步]]｜跨核 [[composer_stub]]｜信号 [[SIGSEGV]]｜安全 [[SELinux]]｜判定 [[退出码101 vs SIGSEGV（composer_stub 崩溃判定）]]｜上级 [[000-GFWK图形框架总览]]
