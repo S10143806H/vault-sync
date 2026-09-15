@@ -8,3 +8,5 @@
 
 [2026-09-15] query | SF: 补全 main thread/commit/composite/present 四词定义表+调用链于 SurfaceFlinger.md
 [2026-09-15] ingest | Fence 页补充：举手信号直觉说明 + present fence 死屏案例(FENCE GAP display=100)，双链 [[SurfaceFlinger 主线程与三阶段]]
+
+[2026-09-15] lint | 美化 SurfaceFlinger.md：callout 分节、修复断裂编号/悬空命令、关联导航表格化

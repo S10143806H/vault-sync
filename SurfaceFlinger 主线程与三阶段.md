@@ -100,12 +100,14 @@ flowchart LR
     class C1,C2,C3 s;
 ```
 
-| 概念              | 是什么                                                            | 干什么                                                          |
-| --------------- | -------------------------------------------------------------- | ------------------------------------------------------------ |
-| **main thread** | SF 的单线程事件循环（`MessageQueue`/`onMessageReceived`），vsync 一到就醒来跑一帧 | 唯一操作图层树的线程；它一卡 → 全屏卡/黑。抓它的栈是定位掉帧/黑屏的起点                       |
-| **① commit**      | 帧的准备阶段：把 App 提交的事务（transaction）和新 buffer 锁进这一帧的状态              | 处理 [[SurfaceControl]] 事务、latch 最新 buffer、算可见区域/几何；决定"这帧长什么样" |
-| **② composite**   | 合成阶段：把各 layer 按 z 序合成                                          | 决定每层走 [[HWC]] overlay（硬件叠加省电）还是 GPU/RenderEngine 客户端合成       |
-| **③ present**     | 上屏阶段：把合成结果交给 [[HWC]] 送显示屏                                      | 提交 present fence，等待上屏；`--timestats` 的 present time 即此步       |
+> 代码位置根目录：`frameworks/native/services/surfaceflinger/`（下表 AAOS 代码列均相对此目录）
+
+| 概念              | 是什么                                                            | 干什么                                                          | AAOS 代码位置 |
+| --------------- | -------------------------------------------------------------- | ------------------------------------------------------------ | ------------- |
+| **main thread** | SF 的单线程事件循环（`MessageQueue`/`onMessageReceived`），vsync 一到就醒来跑一帧 | 唯一操作图层树的线程；它一卡 → 全屏卡/黑。抓它的栈是定位掉帧/黑屏的起点                       | `Scheduler/MessageQueue.cpp` → `MessageQueue::Handler::dispatchFrame`；`Scheduler/Scheduler.cpp` → `Scheduler::onFrameSignal` |
+| **① commit**      | 帧的准备阶段：把 App 提交的事务（transaction）和新 buffer 锁进这一帧的状态              | 处理 [[SurfaceControl]] 事务、latch 最新 buffer、算可见区域/几何；决定"这帧长什么样" | `SurfaceFlinger.cpp` → `SurfaceFlinger::commit()` |
+| **② composite**   | 合成阶段：把各 layer 按 z 序合成                                          | 决定每层走 [[HWC]] overlay（硬件叠加省电）还是 GPU/RenderEngine 客户端合成       | `SurfaceFlinger.cpp` → `SurfaceFlinger::composite()` → `mCompositionEngine->present()`；`CompositionEngine/src/Output.cpp` → `Output::present()` / `prepareFrame()`(选 HWC/GPU) / `finishFrame()`(GPU 合成) |
+| **③ present**     | 上屏阶段：把合成结果交给 [[HWC]] 送显示屏；实为 `composite()` 内部收尾子步骤（`postFramebuffer`） | 提交 present fence，等待上屏；`--timestats` 的 present time 即此步       | `CompositionEngine/src/Output.cpp` → `Output::postFramebuffer()` → `presentAndGetFrameFences()`；`DisplayHardware/HWComposer.cpp` → `HWComposer::presentAndGetReleaseFences()` |
 
 > [!example] 调用链与复现原理
 > **调用链（Android 13+）**：`Scheduler → MessageQueue frame callback → commit() → composite() → (内部) postFramebuffer/present`
@@ -114,24 +116,9 @@ flowchart LR
 > [!important] present 的真实位置
 > `present` **不是**与 `composite` 并列的第三步，而是 `composite()` 内部的收尾子步骤（`postFramebuffer`）。概念上仍是「三阶段」，调用栈上 present 嵌在 composite 里。
 
-### 🗂️ AAOS / AOSP 代码位置
-
-根目录：`frameworks/native/services/surfaceflinger/`
-
-| 阶段 | 函数 | 文件 |
-| --- | --- | --- |
-| **主线程循环** | `MessageQueue::Handler::dispatchFrame` → frame callback | `Scheduler/MessageQueue.cpp` |
-| 帧调度 | `Scheduler::onFrameSignal` | `Scheduler/Scheduler.cpp` |
-| **① commit** | `SurfaceFlinger::commit()` | `SurfaceFlinger.cpp` |
-| **② composite** | `SurfaceFlinger::composite()` → `mCompositionEngine->present()` | `SurfaceFlinger.cpp` |
-| 合成主流程 | `Output::present()`（prepare/finish/post 依次跑） | `CompositionEngine/src/Output.cpp` |
-| 合成策略（HWC vs GPU） | `Output::prepareFrame()` | `CompositionEngine/src/Output.cpp` |
-| GPU 合成 | `Output::finishFrame()` | `CompositionEngine/src/Output.cpp` |
-| **③ present（上屏）** | `Output::postFramebuffer()` → `presentAndGetFrameFences()` | `CompositionEngine/src/Output.cpp` |
-| present fence / 送 HWC | `HWComposer::presentAndGetReleaseFences()` | `DisplayHardware/HWComposer.cpp` |
-
 > [!note] 版本差异
-> 早期（Android ≤12）主线程入口是 `SurfaceFlinger::onMessageReceived` / `onMessageInvalidate`；Android 13+ 拆成 `commit()` + `composite()` 两个独立回调，由 `Scheduler` 驱动。
+> 早期（Android ≤12）主线程入口是 `SurfaceFlinger::onMessageReceived` / `onMessageInvalidate`；
+> Android 13+ 拆成 `commit()` + `composite()` 两个独立回调，由 `Scheduler` 驱动。
 
 ---
 
@@ -142,4 +129,3 @@ flowchart LR
 - [Sync framework / Fence — source.android.com](https://source.android.com/docs/core/graphics/sync) — acquire/release/present fence 的语义与生命周期，跨硬件的 buffer 同步原语。对应本页 §4 `unfired fences` 观测点与 `FENCE GAP` 死屏根因。
 - [SurfaceFlinger 源码（AOSP）— cs.android.com](https://cs.android.com/android/platform/superproject/main/+/main:frameworks/native/services/surfaceflinger/) — §6 代码位置表所有函数（`commit()` / `composite()` / `Output::postFramebuffer()` 等）的在线源码，可直接对照调用链。
 
-## log
