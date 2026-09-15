@@ -7,3 +7,4 @@
 [2026-08-11] ingest | SERDES(GMSL)链路: 台架实测确认数据源(debugfs serdes_status/dmesg gmsl lock[0x8a]/link training 注入), 更新 [[SERDES链路]], 新增用例页 [[TC_SERDES_FAULT_002]]/[[TC_SERDES_STRESS_003]](均实测通过)。
 
 [2026-09-15] query | SF: 补全 main thread/commit/composite/present 四词定义表+调用链于 SurfaceFlinger.md
+[2026-09-15] ingest | Fence 页补充：举手信号直觉说明 + present fence 死屏案例(FENCE GAP display=100)，双链 [[SurfaceFlinger 主线程与三阶段]]

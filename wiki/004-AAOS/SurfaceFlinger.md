@@ -28,17 +28,7 @@ created: 2026-07-28
 
    目标：认识 main thread、commit/composite/present 三个词在栈里的样子。
 
-SF 合成全跑在单一主线程，vsync 驱动，每帧顺序推进 commit → composite → present
 
-| 概念 | 是什么 | 干什么 |
-|---|---|---|
-| **main thread** | SF 的单线程事件循环（`MessageQueue`/`onMessageReceived`），vsync 一到就醒来跑一帧 | 唯一操作图层树的线程；它一卡 → 全屏卡/黑。抓它的栈是定位掉帧/黑屏的起点 |
-| **commit** | 帧的准备阶段：把 App 提交的事务（transaction）和新 buffer 锁进这一帧的状态 | 处理 [[SurfaceControl]] 事务、latch 最新 buffer、算可见区域/几何；决定“这帧长什么样” |
-| **composite** | 合成阶段：把各 layer 按 z 序合成 | 决定每层走 [[HWC]] overlay（硬件叠加省电）还是 GPU/RenderEngine 客户端合成 |
-| **present** | 上屏阶段：把合成结果交给 [[HWC]] 送显示屏 | 提交 present fence，等待上屏；`--timestats` 的 present time 即此步 |
-
-调用链：`main thread → onMessageInvalidate → commit() → composite() → present`。
-给 `composite()` 加 `sleep(3s)` → 主线程被拖住 → 下游 `dequeueBuffer failed -110` + `Skipped N frames`（Day 4 复现原理）。
 
 2. Day 2-3：读 5 个文件，只读调用链（每个 1-2 小时）
    - frameworks/native/services/surfaceflinger/SurfaceFlinger.cpp：onMessageInvalidate → commit() → composite()
