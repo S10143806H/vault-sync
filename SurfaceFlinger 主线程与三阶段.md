@@ -108,8 +108,30 @@ flowchart LR
 | **③ present**     | 上屏阶段：把合成结果交给 [[HWC]] 送显示屏                                      | 提交 present fence，等待上屏；`--timestats` 的 present time 即此步       |
 
 > [!example] 调用链与复现原理
-> **调用链**：`main thread → onMessageInvalidate → commit() → composite() → present`
+> **调用链（Android 13+）**：`Scheduler → MessageQueue frame callback → commit() → composite() → (内部) postFramebuffer/present`
 > 给 `composite()` 加 `sleep(3s)` → 主线程被拖住 → 下游 `dequeueBuffer failed -110` + `Skipped N frames`（Day 4 复现原理）。
+
+> [!important] present 的真实位置
+> `present` **不是**与 `composite` 并列的第三步，而是 `composite()` 内部的收尾子步骤（`postFramebuffer`）。概念上仍是「三阶段」，调用栈上 present 嵌在 composite 里。
+
+### 🗂️ AAOS / AOSP 代码位置
+
+根目录：`frameworks/native/services/surfaceflinger/`
+
+| 阶段 | 函数 | 文件 |
+| --- | --- | --- |
+| **主线程循环** | `MessageQueue::Handler::dispatchFrame` → frame callback | `Scheduler/MessageQueue.cpp` |
+| 帧调度 | `Scheduler::onFrameSignal` | `Scheduler/Scheduler.cpp` |
+| **① commit** | `SurfaceFlinger::commit()` | `SurfaceFlinger.cpp` |
+| **② composite** | `SurfaceFlinger::composite()` → `mCompositionEngine->present()` | `SurfaceFlinger.cpp` |
+| 合成主流程 | `Output::present()`（prepare/finish/post 依次跑） | `CompositionEngine/src/Output.cpp` |
+| 合成策略（HWC vs GPU） | `Output::prepareFrame()` | `CompositionEngine/src/Output.cpp` |
+| GPU 合成 | `Output::finishFrame()` | `CompositionEngine/src/Output.cpp` |
+| **③ present（上屏）** | `Output::postFramebuffer()` → `presentAndGetFrameFences()` | `CompositionEngine/src/Output.cpp` |
+| present fence / 送 HWC | `HWComposer::presentAndGetReleaseFences()` | `DisplayHardware/HWComposer.cpp` |
+
+> [!note] 版本差异
+> 早期（Android ≤12）主线程入口是 `SurfaceFlinger::onMessageReceived` / `onMessageInvalidate`；Android 13+ 拆成 `commit()` + `composite()` 两个独立回调，由 `Scheduler` 驱动。
 
 ---
 
