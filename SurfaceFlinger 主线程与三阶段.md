@@ -114,8 +114,8 @@ flowchart LR
 > 给 `composite()` 加 `sleep(3s)` → 主线程被拖住 → 下游 `dequeueBuffer failed -110` + `Skipped N frames`（Day 4 复现原理）。
 
 > [!info] `onMessageReceived` 取的是什么 message
-> 取的是 SF **内部** `MessageQueue`（`Looper` based）的**事件码 `what`**（`INVALIDATE`→commit / `REFRESH`→composite），由 **vsync** 经 `DispSyncSource` → `dispatchInvalidate` 投递。它只是「该跑哪一步」的节拍信号，**不是** App 的 IPC 消息或事务数据。
-> 真正的数据（`SurfaceControl` 事务、新 buffer）走另一条路：`setTransactionState()` 存入 `mTransactionQueue`，等 `INVALIDATE` 唤醒后在 **commit 阶段**才 latch 进来。
+> 取的是 SF **内部** [[MessageQueue]]（`Looper` based）的**事件码 `what`**（`INVALIDATE`→commit / `REFRESH`→composite），由 **vsync** 经 `DispSyncSource` → `dispatchInvalidate` 投递。它只是「该跑哪一步」的节拍信号，**不是** App 的 IPC 消息或事务数据。
+> 真正的数据（`SurfaceControl` 事务、新 buffer）走另一条路：`setTransactionState()` 存入 `mTransactionQueue`，等 `INVALIDATE` 唤醒后在 **commit 阶段**才 latch 进来。详见 [[MessageQueue]]。
 
 > [!important] present 的真实位置
 > `present` **不是**与 `composite` 并列的第三步，而是 `composite()` 内部的收尾子步骤（`postFramebuffer`）。概念上仍是「三阶段」，调用栈上 present 嵌在 composite 里。
