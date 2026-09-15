@@ -137,8 +137,9 @@ flowchart LR
 
 ## 📚 延伸阅读
 
-- [SurfaceFlinger — source.android.com](https://source.android.com/docs/core/graphics/surfaceflinger-windowmanager)
-- [VSYNC — source.android.com](https://source.android.com/docs/core/graphics/implement-vsync)
-- [Sync framework / Fence — source.android.com](https://source.android.com/docs/core/graphics/sync)
+- [SurfaceFlinger & WindowManager — source.android.com](https://source.android.com/docs/core/graphics/surfaceflinger-windowmanager) — SF 在图形栈中的定位：作为消费者从各 BufferQueue latch buffer，按 z 序合成后送显示屏。对应本页 §6 `commit/composite` 的图层树与事务模型。
+- [Implement VSYNC — source.android.com](https://source.android.com/docs/core/graphics/implement-vsync) — vsync 如何驱动 App / SF 唤醒，`app phase` 与 `sf phase` 偏移、`workDuration` 的来源。解释本页 §2 的 `16.67ms / 15.67ms` 节拍与 pacesetter/follower 机制。
+- [Sync framework / Fence — source.android.com](https://source.android.com/docs/core/graphics/sync) — acquire/release/present fence 的语义与生命周期，跨硬件的 buffer 同步原语。对应本页 §4 `unfired fences` 观测点与 `FENCE GAP` 死屏根因。
+- [SurfaceFlinger 源码（AOSP）— cs.android.com](https://cs.android.com/android/platform/superproject/main/+/main:frameworks/native/services/surfaceflinger/) — §6 代码位置表所有函数（`commit()` / `composite()` / `Output::postFramebuffer()` 等）的在线源码，可直接对照调用链。
 
 ## log
