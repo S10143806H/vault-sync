@@ -50,6 +50,7 @@ _(空)_
 - [[GraphicBuffer]]
 - [[HWC]] — 04 - HWC 硬件混合渲染器
 - [[KL15]]
+- [[MessageQueue]] — SF 主线程事件循环（基于 Looper，vsync 唤醒跑一帧）
 - [[SELinux]] — SELinux（强制访问控制 / avc denied）
 - [[SERDES链路]] — SERDES 链路(显示/摄像头串行链路)
 - [[SHMEM]] — SHMEM（跨 SoC 共享内存）
