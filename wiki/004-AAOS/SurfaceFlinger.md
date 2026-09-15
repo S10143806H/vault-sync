@@ -24,6 +24,7 @@ created: 2026-07-28
 | 稳定性用例 | [[TC_SF_FAULT_002]] | [[Binder IPC\|Binder]] 突刺，SF 不被 [[AMS]]/[[WMS]] 连累 |
 | 图层句柄 | [[SurfaceControl]] | 特权侧直接操作图层树某层的 z/位置/alpha/屏，绕过 [[WMS]] |
 | 核心机制 | [[SurfaceFlinger 主线程与三阶段]] | main thread + commit/composite/present |
+| 主线程心脏 | [[MessageQueue]] | 基于 Looper 的事件循环，vsync 唤醒跑一帧 |
 | 上级地图 | [[000-GFWK图形框架总览]] | 图形框架总览 |
 
 ---
