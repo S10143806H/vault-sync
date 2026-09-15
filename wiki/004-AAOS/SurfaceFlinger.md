@@ -22,8 +22,6 @@ created: 2026-07-28
 - [[SurfaceFlinger 主线程与三阶段]]
 
 
-
-
 `adb shell debuggerd -d $(adb shell pidof surfaceflinger)`   # 看一次健康态的主线程栈长什么样
 
 `adb shell dumpsys SurfaceFlinger --timestats`

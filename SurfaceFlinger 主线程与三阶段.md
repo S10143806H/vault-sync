@@ -21,15 +21,13 @@ adb shell dumpsys SurfaceFlinger | head -200
 
 ---
 
-## 1. 三块屏与它们的 ID
+## 1. Display Identification Data
 
-对应 bug 中的 `display=100`。
-
-| HWC display | SF displayId          | 名称        | 角色                     |
-| :---------: | --------------------- | ----------- | ------------------------ |
-| `0`         | `4634679611807204096` | GUA0 中控   | **pacesetter（主时钟）** |
-| `1`         | `4634679327297303554` | GUA2        | follower                 |
-| `100`       | `4634679587309427457` | GUA1 远端屏 | follower                 |
+| HWC display | SF displayId          | 名称       | 角色                  |
+| :---------: | --------------------- | -------- | ------------------- |
+|     `0`     | `4634679611807204096` | GUA0 中控  | **pacesetter（主时钟）** |
+|     `1`     | `4634679327297303554` | GUA2     | follower            |
+|    `100`    | `4634679587309427457` | GUA1 远端屏 | follower            |
 
 > [!warning] 为什么远端屏最先「看起来」死
 > bug 里的 `FENCE GAP display=100 gap=16.9s` 就是最后这块屏。
@@ -83,3 +81,5 @@ adb shell dumpsys SurfaceFlinger | head -200
 - [SurfaceFlinger — source.android.com](https://source.android.com/docs/core/graphics/surfaceflinger-windowmanager)
 - [VSYNC — source.android.com](https://source.android.com/docs/core/graphics/implement-vsync)
 - [Sync framework / Fence — source.android.com](https://source.android.com/docs/core/graphics/sync)
+
+## log

@@ -14,6 +14,25 @@ created: 2026-07-28
 
 "画好了"举手：跨环节同步信号(dma-buf/sync_file)。没 signal 就取 buffer = 拿半成品 → 花屏 / UAF。
 
+## 直觉：一个「画好了没」的举手牌 🙋
+
+一帧图要经过 **GPU 画 → [[SurfaceFlinger|SF]] 合成 → 屏幕显示** 多手接力，各环节**并行抢时间**、不能干等。fence 就是环节间的握手信号：
+
+```
+GPU 拿到 buffer + 一个 fence（举手牌，初始放下）
+   ↓ GPU 慢慢画，SF 先去忙别的（不干等）
+   ↓ GPU 画完 → fence「举手」(signal)
+SF 看到举手 → 才敢拿这块 buffer 去合成
+```
+
+- fence **signaled（举手）** = 数据 OK，放心用
+- fence **未 signal（没举手）** = 还没画完，谁拿谁翻车
+
+| 翻车方式 | 后果 |
+|---|---|
+| fence **永远不举手** | 下游死等 → **冻屏 / 卡死** |
+| 没等举手就取 / 持已释放 fence | **花屏** 或 **崩溃**（[[SIGSEGV]]） |
+
 ## sync_file 是一个 fd（跨进程/跨域传递）
 - fence 在用户态体现为 `anon_inode:sync_file` 的**文件描述符(fd)**，通过 [[Binder IPC|Binder]]/[[GIPC]] 在进程间传递。
 - 跨 SoC：`weston`(A720) 产出的 sync_file fd 传给 [[composer_stub]] 等待 signal 后再合成。
