@@ -15,7 +15,7 @@ updated: 2026-09-16
 - **`[[双链]]` 天然交叉引用**：按文件名解析、跨目录不断链，契合 [[karpathy]] LLM-Wiki 的「维护交叉引用」要求。
 - **Canvas / Dataview** 等能力可承载 A/B/C/D 四层文件夹的可视化与检索。
 
-本 vault（`AI赋能`）即以 Obsidian 为载体运行。参见 [[自生长本地AI知识库]]。
+本 vault（`AI赋能`）即以 Obsidian 为载体运行。参见 [[自生长LLM Wiki 方法论]]。
 
 ## 📚 延伸阅读
 
@@ -23,4 +23,4 @@ updated: 2026-09-16
 
 ---
 
-参考：[[自生长本地AI知识库]] · [[karpathy]]
+参考：[[自生长LLM Wiki 方法论]] · [[karpathy]]

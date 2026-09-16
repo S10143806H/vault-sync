@@ -12,4 +12,4 @@
 [2026-09-15] lint | 美化 SurfaceFlinger.md：callout 分节、修复断裂编号/悬空命令、关联导航表格化
 [2026-09-15] ingest | 新增 [[MessageQueue]]（SF 主线程事件循环/基于 Looper）：唤醒链路+message语义(what INVALIDATE/REFRESH)+单线程模型+版本演进；双链 [[SurfaceFlinger]]/[[SurfaceFlinger 主线程与三阶段]]，登记 index(004-AAOS 51 篇/共115)。
 
-[2026-09-16] ingest | 美化+补全 [[自生长本地AI知识库]]：据 Bilibili(Xuan_酱《Codex 联动 Obsidian 搭卡帕西同款知识库》)补 A/B/C/D 四层闭环+速查表+映射本 vault+延伸阅读；新增 [[karpathy]]/[[Obsidian]] 双链页，登记 index(007-速查 4 篇/未归类)。
+[2026-09-16] ingest | 美化+补全 [[自生长LLM Wiki 方法论]]：据 Bilibili(Xuan_酱《Codex 联动 Obsidian 搭卡帕西同款知识库》)补 A/B/C/D 四层闭环+速查表+映射本 vault+延伸阅读；新增 [[karpathy]]/[[Obsidian]] 双链页，登记 index(007-速查 4 篇/未归类)。

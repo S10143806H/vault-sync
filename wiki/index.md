@@ -142,7 +142,7 @@ _(空)_
 - [[Ubuntu ↔ Windows 传文件]]
 - [[常用adb指令速查]] — 常用 adb 指令速查 (GFWK 稳定性测试)
 - [[常用linux 指令速查]] — check bot services
-- [[自生长本地AI知识库]] — Codex+Obsidian 搭卡帕西同款自生长知识库（A/B/C/D 四层闭环）
+- [[自生长LLM Wiki 方法论]] — Codex+Obsidian 搭卡帕西同款自生长知识库（A/B/C/D 四层闭环）
 
 ## 未归类
 

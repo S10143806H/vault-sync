@@ -13,8 +13,8 @@
 
 ## wiki/ 内部
 
-- `wiki/index.md` — **全站目录**，按域分类，每页一行带标题。新增页必须登记。
-- `wiki/log.md` — **只追加**流水账（ingest / query / lint），可 grep。
+- `wiki/index.md` — **全站目录**，按域分类。每页一行 = `[[页名]]` + **一句话摘要**（可选元数据：日期/源数）。新增页必须登记。
+- `wiki/log.md` — **只追加**流水账（ingest / query / lint）。行首统一 `[YYYY-MM-DD]`，故可 `grep "^\[" wiki/log.md | tail -5` 取最近记录。
 - 按域编号子目录（现状，保留）：
   - `000-GenerativeAI` 生成式 AI 基础
   - `001-Agent` Agent / 编码助手

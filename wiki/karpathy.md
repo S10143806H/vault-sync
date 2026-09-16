@@ -24,7 +24,7 @@ updated: 2026-09-16
 ## 与本 vault 的关系
 
 本知识库的三层结构（`raw/` → `wiki/` → `CLAUDE.md` schema）即该范式的落地。
-参见 [[自生长本地AI知识库]] 的 A/B/C/D 四层闭环。
+参见 [[自生长LLM Wiki 方法论]] 的 A/B/C/D 四层闭环。
 
 ## 📚 延伸阅读
 
@@ -32,4 +32,4 @@ updated: 2026-09-16
 
 ---
 
-参考：[[自生长本地AI知识库]] · [[Obsidian]]
+参考：[[自生长LLM Wiki 方法论]] · [[Obsidian]]
