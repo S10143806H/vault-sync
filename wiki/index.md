@@ -83,7 +83,7 @@ _(空)_
 - [[退出码101 vs SIGSEGV（composer_stub 崩溃判定）]]
 - [[重点用例-高亮]] — 重点用例 ❤️（SF / HWC / GFWK 黄色高亮）
 
-## 005-稳定性 — 稳定性测试 (用例·故障·BUG)  (46)
+## 005-稳定性 — 稳定性测试 (用例·故障·BUG)  (47)
 
 - [[2026-08-09-GFWK收严杀进程压测]] — 2026-08-09 GFWK 收严杀进程压测（5用例×5轮）
 - [[ANR]] — ANR - Application Not Responding
@@ -92,6 +92,7 @@ _(空)_
 - [[BUG-STRESS006-Cluster撕裂花屏闪屏]] — BUG-STRESS006 仪表屏(Cluster)撕裂/花屏/闪屏
 - [[BUG-kill-HWC-crashes-A720-composer_stub]] — BUG: kill IVI HWC 拖崩 A720 composer_stub (SIGSEGV @ libwayland)
 - [[CornerStone]]
+- [[GFS]] — GFS（全局故障服务 / 故障 4 方向分发·OTA）
 - [[GFWK STR 挂起唤醒稳定性测试]] — GFWK STR 挂起-唤醒稳定性测试（§3.5 方法与用例）
 - [[GFWK kill-恢复类测试]] — GFWK kill-恢复类测试（SF / HWC / composer_stub / weston）
 - [[GFWK 双bots自动挖bug闭环]] — GFWK 自动挖 bug 闭环（feishu-gtmp-bot + gtmp-analyze-bot）
