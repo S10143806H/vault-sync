@@ -31,6 +31,8 @@
 - 交叉引用一律用 `[[页名]]`；不确定目标页是否存在也先写 `[[]]`，标记待补。
 - BUG 页：`BUG-<组件>-<现象>.md`；用例页：`TC_<模块>_<类型>_<编号>.md`。
 - log 行格式：`[YYYY-MM-DD] <ingest|query|lint> | <一句话>`。
+- **Frontmatter**：每页顶部带 YAML frontmatter，供 Obsidian Dataview 检索。基础字段：`title`、`tags`、`created`/`updated`（YYYY-MM-DD）、`source`（来源，实体/概念页可选）。
+- **图片本地化**：源图存 `raw/assets/`，wiki 用 `![[图名]]` 引用。LLM 读带图页**两步走**——先读正文文本，再按需单独查看引用的图片。
 
 ## 工作流
 
