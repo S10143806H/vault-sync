@@ -3,7 +3,7 @@
 > 本 vault 的全站目录, 按域分类。karpathy LLM-Wiki 模式: 人读, LLM 维护。
 > 新增/改动记 [[log]]; schema 见根 `CLAUDE.md`。
 
-**共 115 篇**
+**共 118 篇**
 
 ## 000-GenerativeAI — 生成式 AI 基础
 
@@ -27,7 +27,7 @@ _(空)_
 - [[skill-creator]] — 参考资料
 - [[teach]]
 
-## 004-AAOS — AAOS 图形栈 / 跨SoC (显示知识库)  (51)
+## 004-AAOS — AAOS 图形栈 / 跨SoC (显示知识库)  (53)
 
 - [[000-GFWK图形框架总览]] — GFWK 图形框架总览
 - [[01-一帧画面是怎么上屏的]] — 01 - 一帧画面是怎么上屏的（大图景）
