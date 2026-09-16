@@ -91,7 +91,7 @@ _(空)_
 - [[BUG-SF-ctl-stopstart-显示不重建黑屏]] — 澄清: stop/start SF 后卡开机动画 —— 预期行为(非缺陷)
 - [[BUG-STRESS006-Cluster撕裂花屏闪屏]] — BUG-STRESS006 仪表屏(Cluster)撕裂/花屏/闪屏
 - [[BUG-kill-HWC-crashes-A720-composer_stub]] — BUG: kill IVI HWC 拖崩 A720 composer_stub (SIGSEGV @ libwayland)
-- [[CST - CornerStone]]
+- [[CST - CornerStone]] — Cornerstone 维护服务（日志黑匣子 + 事件/标记/云同步/USB导出；CST Maint 底层）
 - [[GFS]] — GFS（全局故障服务 / 故障 4 方向分发·OTA）
 - [[GFWK STR 挂起唤醒稳定性测试]] — GFWK STR 挂起-唤醒稳定性测试（§3.5 方法与用例）
 - [[GFWK kill-恢复类测试]] — GFWK kill-恢复类测试（SF / HWC / composer_stub / weston）
