@@ -137,11 +137,17 @@ _(空)_
 - [[屏幕异常模型训练方案]]
 - [[黑屏检测算法说明]]
 
-## 007-速查 — 速查 / cheatsheet  (3)
+## 001-Agent — 附：知识管理
+
+- [[karpathy]] — Andrej Karpathy / LLM-Wiki 范式
+- [[Obsidian]] — 本地 Markdown 知识库
+
+## 007-速查 — 速查 / cheatsheet  (4)
 
 - [[Ubuntu ↔ Windows 传文件]]
 - [[常用adb指令速查]] — 常用 adb 指令速查 (GFWK 稳定性测试)
 - [[常用linux 指令速查]] — check bot services
+- [[自生长本地AI知识库]] — Codex+Obsidian 搭卡帕西同款自生长知识库（A/B/C/D 四层闭环）
 
 ## 未归类
 
