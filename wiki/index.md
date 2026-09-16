@@ -137,11 +137,6 @@ _(空)_
 - [[屏幕异常模型训练方案]]
 - [[黑屏检测算法说明]]
 
-## 001-Agent — 附：知识管理
-
-- [[karpathy]] — Andrej Karpathy / LLM-Wiki 范式
-- [[Obsidian]] — 本地 Markdown 知识库
-
 ## 007-速查 — 速查 / cheatsheet  (4)
 
 - [[Ubuntu ↔ Windows 传文件]]
@@ -152,4 +147,6 @@ _(空)_
 ## 未归类
 
 - [[claudecode 飞书]]
+- [[karpathy]] — Andrej Karpathy / LLM-Wiki 范式
+- [[Obsidian]] — 本地 Markdown 知识库
 - [[rear display]]
