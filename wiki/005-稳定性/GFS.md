@@ -31,7 +31,7 @@ source: "raw/articles/XG/CST SDK 接入文档.pdf (v1.0, 2026-06)"
 1. **StorageManager** — 持久化到 SQLite（`/data/vendor/gfs/stats/gfs_faults.db`）+ 事件文本文件（`/data/vendor/gfs/evtfiles/`）
 2. **GfsSubscription** — 通知所有订阅该故障的回调
 3. **GfsHub** — FATAL 级写入内核驱动 `/dev/gfs`
-4. **TargetCornerstone** — 转发到 [[CornerStone]] 维护服务（事件上报 + 云端同步）
+4. **TargetCornerstone** — 转发到 [[CST - CornerStone]] 维护服务（事件上报 + 云端同步）
 
 故障恢复时同样通知这 4 个方向。
 
@@ -47,7 +47,7 @@ source: "raw/articles/XG/CST SDK 接入文档.pdf (v1.0, 2026-06)"
 ## 关联
 
 - 上层 SDK：[[CST SDK]]（Diag 模块，`CstDiag`）
-- 下游：[[CornerStone]]（FATAL 故障转发 + 云端同步）
+- 下游：[[CST - CornerStone]]（FATAL 故障转发 + 云端同步）
 - 诊断产物：[[tombstone（墓碑 验尸报告）]]、[[RAMdump]]
 - 故障类用例：[[TC_SF_FAULT_001]]、[[TC_HWC_FAULT_004]]、[[TC_CSOC_FAULT_003]]
 

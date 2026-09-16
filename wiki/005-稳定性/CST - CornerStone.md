@@ -1,5 +1,8 @@
 ---
-title: CornerStone
+title: CST - CornerStone
+aliases:
+  - CornerStone
+  - Cornerstone
 tags:
   - 稳定性
   - AAOS
@@ -14,6 +17,8 @@ source: "raw/articles/XG/CST SDK 接入文档.pdf (v1.0, 2026-06)"
 ---
 
 CornerStone 是你们车机上的**持续日志落盘系统**——可以理解为整车的"黑匣子"：一个常驻服务，把系统运行日志（各域的 logcat、内核、崩溃信息等）持续写到设备磁盘的固定目录里，跨重启保留，出问题时可以追溯事发前的完整历史，不是 Android 标准组件。
+
+---
 
 > 📌 **补全（据 [[CST SDK]] 接入文档）**：日志落盘只是 CornerStone 的一个功能组件（`logstorage.json`）。它实际是平台的**维护服务全貌**——见下文。
 

@@ -17,7 +17,7 @@ source: "raw/articles/XG/CST SDK 接入文档.pdf (v1.0, 2026-06)"
 
 **CST SDK（Cornerstone SDK）** 是 Gua 车载 [[中控 Android（IVI）|AAOS]] 平台的统一客户端开发套件，封装与底层三大服务的交互，给上层应用提供简洁的 C/C++ 和 Java API。一句话：**上报日志、故障、维护事件的"官方入口"**。
 
-> ⚠️ 本页据 SDK 接入文档整理，属平台内部 SDK；三大模块分别对接 [[GDC]] / [[GFS]] / [[CornerStone]] 三个底层服务。
+> ⚠️ 本页据 SDK 接入文档整理，属平台内部 SDK；三大模块分别对接 [[GDC]] / [[GFS]] / [[CST - CornerStone]] 三个底层服务。
 
 ## 三大模块 → 底层服务映射
 
@@ -25,7 +25,7 @@ source: "raw/articles/XG/CST SDK 接入文档.pdf (v1.0, 2026-06)"
 |---|---|---|---|
 | **Debug** | `cst_debug.h` | 日志上报、命令注册与处理、RawData 传输 | [[GDC]]（`IGdcHalService`） |
 | **Diag** | `cst_diag.h` / `cst_diag_ota.h` / `cst.diag.CstDiag` | 故障上报/恢复、订阅、查询、OTA 升级 | [[GFS]]（`IGfs` / `IDiagOtaManager`） |
-| **Maint** | `cst_maint.h` / `cst.maint.CstMaint` | 事件上报、点位（Mark）上报 | [[CornerStone]]（`ICornerStoneService`） |
+| **Maint** | `cst_maint.h` / `cst.maint.CstMaint` | 事件上报、点位（Mark）上报 | [[CST - CornerStone]]（`ICornerStoneService`） |
 
 ## 平台差异（关键约束）
 
@@ -68,7 +68,7 @@ source: "raw/articles/XG/CST SDK 接入文档.pdf (v1.0, 2026-06)"
 
 ## 关联
 
-- 底层服务：[[GDC]]、[[GFS]]、[[CornerStone]]
+- 底层服务：[[GDC]]、[[GFS]]、[[CST - CornerStone]]
 - 跨SoC 基础：[[GIPC]]、[[SHMEM]]、[[安全核]]、[[仪表]]、[[中控 Android（IVI）]]
 - 接口/通信：[[vendor AIDL]]、[[Binder IPC]]
 - 诊断产物：[[tombstone（墓碑 验尸报告）]]、[[RAMdump]]
