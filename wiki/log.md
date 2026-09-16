@@ -10,3 +10,4 @@
 [2026-09-15] ingest | Fence 页补充：举手信号直觉说明 + present fence 死屏案例(FENCE GAP display=100)，双链 [[SurfaceFlinger 主线程与三阶段]]
 
 [2026-09-15] lint | 美化 SurfaceFlinger.md：callout 分节、修复断裂编号/悬空命令、关联导航表格化
+[2026-09-15] ingest | 新增 [[MessageQueue]]（SF 主线程事件循环/基于 Looper）：唤醒链路+message语义(what INVALIDATE/REFRESH)+单线程模型+版本演进；双链 [[SurfaceFlinger]]/[[SurfaceFlinger 主线程与三阶段]]，登记 index(004-AAOS 51 篇/共115)。
