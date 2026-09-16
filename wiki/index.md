@@ -43,8 +43,10 @@ _(空)_
 - [[Buffer Queue]]
 - [[CI构建与产物流程]] — CI 构建与产物流程（Jenkins → JFrog Artifactory）
 - [[CPMS]] — CPMS（Car Power Management Service）
+- [[CST SDK]] — Gua AAOS 诊断/故障/维测统一 SDK（Debug/Diag/Maint 三模块）
 - [[Consumer]] — 消费者 (Consumer)
 - [[Fence]]
+- [[GDC]] — GDC（全局诊断通信 / 跨SoC 日志·命令·RawData）
 - [[GIPC]] — GIPC（Gua Inter-SoC 通信）
 - [[Gralloc]]
 - [[GraphicBuffer]]
