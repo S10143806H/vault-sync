@@ -15,3 +15,4 @@
 [2026-09-16] ingest | 美化+补全 [[自生长LLM Wiki 方法论]]：据 Bilibili(Xuan_酱《Codex 联动 Obsidian 搭卡帕西同款知识库》)补 A/B/C/D 四层闭环+速查表+映射本 vault+延伸阅读；新增 [[karpathy]]/[[Obsidian]] 双链页，登记 index(007-速查 4 篇/未归类)。
 [2026-09-16] lint | 对照 raw/articles/llm-wiki.md 体检 CLAUDE.md(schema)：补 index 一句话摘要、log grep 用法、frontmatter 字段约定、图片本地化(raw/assets 两步读图)、Query 输出形态、Lint 数据缺口+建议下一步；log 前缀保留 [YYYY-MM-DD] 不迁 ## 以护历史。
 [2026-09-16] ingest | CST SDK 接入文档(v1.0,34页): 新增 [[CST SDK]](hub,004)/[[GDC]](004,Debug/跨SoC通信)/[[GFS]](005,Diag/故障4方向分发+OTA)；增补 [[CST - CornerStone]] 维护服务全貌(双进程/事件标记/云同步/USB导出/Maint客户端)；双链 [[GIPC]]/[[SHMEM]]/[[安全核]]/[[仪表]]/[[tombstone]]/[[RAMdump]]/故障用例；登记 index(004:53/005:47/共118)。
+[2026-09-16] lint | 命名统一: CornerStone 页改名 [[CST - CornerStone]](归入 CST 服务族)，title 更新+加 aliases[CornerStone,Cornerstone] 保旧链接可解析；全站引用(CST SDK/GFS/index)已指向新名。
