@@ -140,9 +140,10 @@ _(空)_
 - [[屏幕异常模型训练方案]]
 - [[黑屏检测算法说明]]
 
-## 007-速查 — 速查 / cheatsheet  (4)
+## 007-速查 — 速查 / cheatsheet  (5)
 
 - [[Ubuntu ↔ Windows 传文件]]
+- [[lark-cli 知识库批量导出]] — wiki +node-list 递归 + drive +export 批量导出飞书知识库（含脚本与限频/权限坑）
 - [[常用adb指令速查]] — 常用 adb 指令速查 (GFWK 稳定性测试)
 - [[常用linux 指令速查]] — check bot services
 - [[自生长LLM Wiki 方法论]] — Codex+Obsidian 搭卡帕西同款自生长知识库（A/B/C/D 四层闭环）
