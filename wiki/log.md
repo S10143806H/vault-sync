@@ -17,3 +17,4 @@
 [2026-09-16] ingest | CST SDK 接入文档(v1.0,34页): 新增 [[CST SDK]](hub,004)/[[GDC]](004,Debug/跨SoC通信)/[[GFS]](005,Diag/故障4方向分发+OTA)；增补 [[CST - CornerStone]] 维护服务全貌(双进程/事件标记/云同步/USB导出/Maint客户端)；双链 [[GIPC]]/[[SHMEM]]/[[安全核]]/[[仪表]]/[[tombstone]]/[[RAMdump]]/故障用例；登记 index(004:53/005:47/共118)。
 [2026-09-16] lint | 命名统一: CornerStone 页改名 [[CST - CornerStone]](归入 CST 服务族)，title 更新+加 aliases[CornerStone,Cornerstone] 保旧链接可解析；全站引用(CST SDK/GFS/index)已指向新名。
 [2026-10-24] query | 如何用 lark-cli 批量导出知识库线上文档：实测 lark-cli v1.0.98 help/skill，新增 [[lark-cli 知识库批量导出]](007,递归导出脚本+格式对照+错误码)，登记 index(007-速查 5 篇)。
+[2026-10-31] query | Ameba Pro2 复刻英伟达鸭子可行性调研：读 Open_Duck_Mini/Runtime/Playground、rustypot、ameba-arduino-pro2 SDK 源码 + Microduck/社区调研，新增 008-机器人 域(schema 增域) 7 页：[[Ameba鸭子-可行性调研与详细设计]]/[[Ameba鸭子-操作手册]]/[[AMB82-mini]]/[[Microduck]]/[[Open Duck Mini]]/[[STS3215]]/ameba_duck README；附固件(C++ 推理 vs onnxruntime 误差 9.9e-7、STS 报文对齐 rustypot 向量)+PC 工具+CAD；登记 index(共125)。

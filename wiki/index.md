@@ -3,7 +3,7 @@
 > 本 vault 的全站目录, 按域分类。karpathy LLM-Wiki 模式: 人读, LLM 维护。
 > 新增/改动记 [[log]]; schema 见根 `CLAUDE.md`。
 
-**共 118 篇**
+**共 125 篇**
 
 ## 000-GenerativeAI — 生成式 AI 基础
 
@@ -147,6 +147,16 @@ _(空)_
 - [[常用adb指令速查]] — 常用 adb 指令速查 (GFWK 稳定性测试)
 - [[常用linux 指令速查]] — check bot services
 - [[自生长LLM Wiki 方法论]] — Codex+Obsidian 搭卡帕西同款自生长知识库（A/B/C/D 四层闭环）
+
+## 008-机器人 — 具身智能 / 机器人  (7)
+
+- [[Ameba鸭子-可行性调研与详细设计]] — Ameba Pro2 复刻"英伟达鸭子"(Open Duck Mini v2) 可行性+详设：算力/总线/IMU/PCB/打印/固件（2026-10-31, 8 源）
+- [[Ameba鸭子-操作手册]] — 11 阶段照做手册：采购→打印→舵机配置→组装→接线→自检→零位标定→站立→行走调参
+- [[AMB82-mini]] — Ameba Pro2 规格、引脚速查与 SDK 源码里的坑（flush 空实现 / 128B 接收缓冲 / 120KB 堆 / BNO055 不可用）
+- [[Microduck]] — GTC Berlin 2026 爆火的 $399 鸭子（Pollen/HF）：XL330×15、RK3566，硬件不开源
+- [[Open Duck Mini]] — Disney BDX 开源微缩版 v2：STS3215×14 + Pi Zero 2W，全开源，BOM<$400
+- [[STS3215]] — 飞特总线舵机速查：协议/测试向量/寄存器/单位换算/半双工接口
+- [[008-机器人/ameba_duck/README|ameba_duck 代码目录]] — 固件 / PC 工具 / CAD 生成器索引与验证状态
 
 ## 未归类
 

@@ -1,0 +1,3 @@
+# 由 tools/export_policy.py 生成(约 4MB), 不入库
+policy_weights.h
+policy_selftest.h
